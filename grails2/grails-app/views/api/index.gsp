@@ -56,7 +56,7 @@
                     log("Unable to Load SwaggerUI");
                 },
                 docExpansion: "none",
-                sorter: "alpha"
+                sorter: "method"
             });
 
             $('#input_apiKey').change(function () {
