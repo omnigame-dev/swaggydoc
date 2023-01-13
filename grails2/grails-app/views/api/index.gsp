@@ -43,6 +43,14 @@
                     $('pre code').each(function (i, e) {
                         hljs.highlightBlock(e)
                     });
+
+                    $('.toggleEndpointList:not([id])').each(function (i, e) {
+                        e.textContent = e.textContent.replace(/-/g, '/');
+                    })
+
+                    $('.toggleOperation').each(function (i, e) {
+                        e.textContent = e.textContent.split("/").pop()
+                    })
                 },
                 onFailure: function (data) {
                     log("Unable to Load SwaggerUI");

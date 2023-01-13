@@ -73,11 +73,12 @@ class SwaggyDataService {
     @SuppressWarnings("UnnecessaryQualifiedReference")
     ControllerDefinition apiDetails(String controller) {
         GrailsControllerClass theController = grailsApplication.controllerClasses.
-                find { it.logicalPropertyName == controller && SwaggyDataService.getApi(it) } as GrailsControllerClass
+                find { getApiIdentifier(it) == controller } as GrailsControllerClass
 
         if (!theController) {
             return null
         }
+        controller = theController.logicalPropertyName
         Class theControllerClazz = theController.referenceInstance.class
 
         Api api = getApi(theController)
@@ -330,7 +331,7 @@ class SwaggyDataService {
     @CompileStatic
     @SuppressWarnings("GrMethodMayBeStatic")
     private ApiDeclaration controllerToApi(GrailsClass controller) {
-        def name = controller.logicalPropertyName
+        def name = getApiIdentifier(controller)
         new ApiDeclaration(
                 path: grailsLinkGenerator.link(controller: 'api', action: 'show', id: name, absolute: true),
                 description: getApi(controller).description() ?: controller.naturalName
@@ -674,6 +675,14 @@ class SwaggyDataService {
             log.warn "Unknown type for property ${fieldName}, please specify it in the domain's class hasMany"
             new ContainerField(null, null)
         }
+    }
+
+    private getApiIdentifier(GrailsClass controller) {
+        Api api = getApi(controller)
+        if (api) {
+            return (api.basePath() + "/" + api.value()).replaceAll(/\/+/, '-')
+        }
+        return controller.fullName.replaceAll(/\./, '-')
     }
 
     private static Field getPrimitiveType(Class type, ConstrainedProperty constrainedProperty = null) {
