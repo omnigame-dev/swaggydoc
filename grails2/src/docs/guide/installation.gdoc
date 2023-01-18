@@ -28,11 +28,11 @@ repositories {
 }
 dependencies {
     ...
-    compile "com.github.rahulsom:swaggydoc-commons:0.28.0"
+    compile "com.github.rahulsom:swaggydoc-commons:0.28.1"
 }
 plugins {
     ...
-    compile ":swaggydoc:0.28.0"
+    compile ":swaggydoc:0.28.1"
 }
 {code}
 
